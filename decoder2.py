@@ -45,7 +45,8 @@ with Image.open("outputs/encoded_picture.png") as img:
 
     raw_data = ints_to_str(img_data, spacing, payload_pixels)
     end_of_payload = len(raw_data) - ext_len
-    ext = raw_data[end_of_payload + 1 : end_of_payload + ext_len]
+    print(raw_data[end_of_payload:])
+    ext = raw_data[end_of_payload:end_of_payload + ext_len]
     print("Extention:", ext)
     message = raw_data[:len(raw_data)-ext_len-1]
 
