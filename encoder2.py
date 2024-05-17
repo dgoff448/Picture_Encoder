@@ -52,10 +52,11 @@ class Payload:
         print(f"Payload Length Pixel: {arr[-1][-1]}\nExtension Length Pixel: {arr[-1][-2]}")      # Debug print to show last to pixels
 
         pc = 0
-        for i in range(0, len(arr), spread): # for i, ar in enumerate(arr):
+        for i in range(0, len(arr)): # for i, ar in enumerate(arr):
             for j in range(0, len(arr[i]), spread): # for j, a in enumerate(ar):
-                oldTup = list(arr[i][j])
+                oldTup = list(arr[i][j]) 
                 newArr = [0, 0, 0]
+                saveArrays = []
                 for k in range(0, len(arr[i][j])): # for k, rgb in enumerate(oldTup):
                     if self.payload[pc] in ["‘", "’"]:
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord("'"), "08b")[1:], 2)
@@ -63,12 +64,15 @@ class Payload:
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord('"'), "08b")[1:], 2)
                     else:
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord(self.payload[pc]), "08b")[1:], 2)
+                        # print(f"Old Val: {format(arr[i][j][k])}\n Pay Val: {format(ord(self.payload[pc]))}")
                     pc += 1
                     if pc > len(self.payload)-1:
                         break
                 arr[i][j] = tuple(newArr)
+                saveArrays.append(newArr)
                 if pc > len(self.payload)-1:
                         return arr
+        # print(saveArrays)
         return arr
     
     def saveImage(self, arr):
