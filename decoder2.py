@@ -21,8 +21,9 @@ def ints_to_str(int_list: list, spacing: int) -> str:
     print("length of array:", len(int_list))
     # print(int_list)
     for i in range(0, len(int_list), spacing):
-        if i < 50: print(i, int_to_char(int_list[i]))
-        contents += int_to_char(int_list[i])
+        for j in int_list[i]:
+            contents += int_to_char(j)
+
     
     return contents
 
@@ -34,7 +35,7 @@ with Image.open("outputs/encoded_picture.png") as img:
     print("Extension length:", ext_len)
     print("Total length:", payload_length + ext_len)
 
-    img_data = [x for pixels in img_data for x in pixels[:3]]
+    print(img_data[:15])
     
     width, height = img.size
     total_pixels = width * (height - 1)
@@ -42,8 +43,8 @@ with Image.open("outputs/encoded_picture.png") as img:
     spacing = math.floor(total_pixels // payload_pixels)
     print("Spacing:", spacing)
 
-    ext = ints_to_str(img_data[payload_length:payload_length+ext_len], spacing)
-    print("Extension:", ext)
+    # ext = ints_to_str(img_data[payload_length:payload_length+ext_len], spacing)
+    # print("Extension:", ext)
 
     message = ints_to_str(img_data, spacing)
 
