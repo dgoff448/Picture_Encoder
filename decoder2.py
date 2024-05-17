@@ -18,13 +18,15 @@ def int_to_char(num: int) -> str:
 
 def ints_to_str(int_list: list, spacing: int) -> str:
     contents = ""
-
+    print("length of array:", len(int_list))
+    # print(int_list)
     for i in range(0, len(int_list), spacing):
-        contents += int_to_char(i)
+        if i < 50: print(i, int_to_char(int_list[i]))
+        contents += int_to_char(int_list[i])
     
     return contents
 
-with Image.open("encoded_picture.png") as img:
+with Image.open("outputs/encoded_picture.png") as img:
     img_data = list(img.getdata())
     payload_length = get_length(img_data.pop()) # last tuple stores length of the payload
     print("Payload length:", payload_length)
@@ -34,17 +36,16 @@ with Image.open("encoded_picture.png") as img:
 
     img_data = [x for pixels in img_data for x in pixels[:3]]
     
-
     width, height = img.size
     total_pixels = width * (height - 1)
-    payload_pixels = (payload_length + ext_len) / 3
+    payload_pixels = (payload_length + ext_len) // 3
     spacing = math.floor(total_pixels // payload_pixels)
     print("Spacing:", spacing)
 
     ext = ints_to_str(img_data[payload_length:payload_length+ext_len], spacing)
     print("Extension:", ext)
 
-    message = ints_to_str(img_data[:payload_length], spacing)
+    message = ints_to_str(img_data, spacing)
 
-with open("outputs/output." + ext, "w") as file:
+with open("outputs/output", "w") as file:
     file.write(message)
