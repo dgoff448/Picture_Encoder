@@ -42,14 +42,14 @@ class Payload:
     def encode(self):
         spreadRes = self.img.size[0] * (self.img.size[1] - 1)
         spread = math.floor(spreadRes // (len(self.payload) // 3))
-        print(f"spreadRes: {spreadRes}\n Total Length: {len(self.payload)}\n Spread: {spread}")  # Debug line
+        print(f"spreadRes: {spreadRes}\nTotal Length: {len(self.payload)}\Spread: {spread}")  # Debug line
 
 
         arr = np.array(self.img)
         arr[-1][-1] = self.to_base_256(self.payload_len)     # last RGB value holds the length of the payload (read like a normal num)
         arr[-1][-2] = self.to_base_256(len(self.payload_ext))    # second-to-last RGB value holds the length of the payload extension
 
-        print(arr[-1][-1], print(arr[-1][-2]))      # Debug print to show last to pixels
+        print(f"Payload Length Pixel: {arr[-1][-1]}\nExtension Length Pixel: {arr[-1][-2]}")      # Debug print to show last to pixels
 
         pc = 0
         for i in range(0, len(arr), spread): # for i, ar in enumerate(arr):
@@ -80,7 +80,7 @@ class Payload:
 payload_file = input("Enter Payload Filename: ")
 picture_file = input("Enter Picture Filename: ")
 pl = Payload(f"images/{picture_file}", f"payloads/{payload_file}")
-print(pl.payload_ext)
+print(f"Extension: {pl.payload_ext}")
 if not pl.canFit():
     raise("Not enough space in image to encode payload.")
 
