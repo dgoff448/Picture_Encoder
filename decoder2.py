@@ -30,16 +30,19 @@ with Image.open("encoded_picture.png") as img:
     print("Payload length:", payload_length)
     ext_len = get_length(img_data.pop()) # second-last tuple stores length of the extension
     print("Extension length:", ext_len)
+    print("Total length:", payload_length + ext_len)
 
     img_data = [x for pixels in img_data for x in pixels[:3]]
-    ext = ints_to_str(img_data[payload_length:payload_length+ext_len])
-    print("Extension:", ext)
+    
 
     width, height = img.size
     total_pixels = width * (height - 1)
-    payload_pixels = payload_length / 3
-    spacing = math.floor(total_pixels / payload_pixels)
-    print("Spacing: ", spacing)
+    payload_pixels = (payload_length + ext_len) / 3
+    spacing = math.floor(total_pixels // payload_pixels)
+    print("Spacing:", spacing)
+
+    ext = ints_to_str(img_data[payload_length:payload_length+ext_len], spacing)
+    print("Extension:", ext)
 
     message = ints_to_str(img_data[:payload_length], spacing)
 
