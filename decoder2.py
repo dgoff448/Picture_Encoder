@@ -1,4 +1,5 @@
 from PIL import Image
+import math
 
 def get_length(pixel: tuple) -> int:
     '''
@@ -10,16 +11,17 @@ def int_to_char(num: int) -> str:
     '''
     converts an integer (between 0 and 127) to an ASCII character
     '''
-    
-    # print(num)
+
     binary = format(num, "08b")
     char = chr(int(binary[1:], 2))
     return char if char != "\x00" else ""
 
-def ints_to_str(int_list: list) -> str:
+def ints_to_str(int_list: list, spacing: int) -> str:
     contents = ""
-    for i in int_list:
+
+    for i in range(0, len(int_list), spacing):
         contents += int_to_char(i)
+    
     return contents
 
 with Image.open("encoded_picture.png") as img:
@@ -33,8 +35,13 @@ with Image.open("encoded_picture.png") as img:
     ext = ints_to_str(img_data[payload_length:payload_length+ext_len])
     print("Extension:", ext)
 
-    message = ints_to_str(img_data[:payload_length])
-    # print(message)
+    width, height = img.size
+    total_pixels = width * (height - 1)
+    payload_pixels = payload_length / 3
+    spacing = math.floor(total_pixels / payload_pixels)
+    print("Spacing: ", spacing)
+
+    message = ints_to_str(img_data[:payload_length], spacing)
 
 with open("outputs/output." + ext, "w") as file:
     file.write(message)
