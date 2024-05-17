@@ -42,19 +42,19 @@ class Payload:
     # Encode payload into image array
     def encode(self):
         spreadRes = self.img.size[0] * (self.img.size[1] - 1)
-        spread = math.floor(spreadRes // len(self.payload) // 3)
-        
+        spread = math.floor(spreadRes // (len(self.payload) // 3))
+        print(f"spreadRes: {spreadRes}\n Char Amt: {len(self.payload)}\n Spread: {spread}")  # Debug line
 
 
         arr = np.array(self.img)
         arr[-1][-1] = self.to_base_256(self.payload_len)     # last RGB value holds the length of the payload (read like a normal num)
         arr[-1][-2] = self.to_base_256(len(self.payload_ext))    # second-to-last RGB value holds the length of the payload extension
 
-        print(arr[-1][-1], print(arr[-1][-2]))
+        print(arr[-1][-1], print(arr[-1][-2]))      # Debug print to show last to pixels
 
         pc = 0
-        for i in range(0, len(arr)):# for i, ar in enumerate(arr):
-            for j in range(0, len(arr[i])): # for j, a in enumerate(ar):
+        for i in range(0, len(arr), spread): # for i, ar in enumerate(arr):
+            for j in range(0, len(arr[i]), spread): # for j, a in enumerate(ar):
                 oldTup = list(arr[i][j])
                 newArr = [0, 0, 0]
                 for k in range(0, len(arr[i][j])): # for k, rgb in enumerate(oldTup):
@@ -70,6 +70,7 @@ class Payload:
                 arr[i][j] = tuple(newArr)
                 if pc > len(self.payload)-1:
                         return arr
+        return arr
     
     def saveImage(self, arr):
         img = Image.fromarray(arr)
