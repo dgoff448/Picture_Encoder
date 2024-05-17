@@ -16,7 +16,6 @@ class Payload:
                 self.payload += line
 
         self.payload_len = len(self.payload) # BEFORE EXTENSION ADDED
-        print(self.payload)
         print(f"Payload Length: {len(self.payload)}")
         print(f"Extension Length: {len(self.payload_ext)}")
         self.payload = self.payload + self.payload_ext
@@ -43,7 +42,7 @@ class Payload:
     def encode(self):
         spreadRes = self.img.size[0] * (self.img.size[1] - 1)
         spread = math.floor(spreadRes // (len(self.payload) // 3))
-        print(f"spreadRes: {spreadRes}\n Char Amt: {len(self.payload)}\n Spread: {spread}")  # Debug line
+        print(f"spreadRes: {spreadRes}\n Total Length: {len(self.payload)}\n Spread: {spread}")  # Debug line
 
 
         arr = np.array(self.img)
