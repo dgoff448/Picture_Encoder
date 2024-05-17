@@ -74,7 +74,7 @@ class Payload:
     
     def saveImage(self, arr):
         img = Image.fromarray(arr)
-        img.save('encoded_picture.png', quality=100, subsampling=0)
+        img.save('outputs/encoded_picture.png', quality=100, subsampling=0)
 
 
 # Main 
