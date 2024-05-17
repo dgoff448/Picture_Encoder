@@ -42,7 +42,7 @@ class Payload:
     def encode(self):
         spreadRes = self.img.size[0] * (self.img.size[1] - 1)
         spread = math.floor(spreadRes // (len(self.payload) // 3))
-        print(f"spreadRes: {spreadRes}\nTotal Length: {len(self.payload)}\Spread: {spread}")  # Debug line
+        print(f"spreadRes: {spreadRes}\nTotal Length: {len(self.payload)}\nSpread: {spread}")  # Debug line
 
 
         arr = np.array(self.img)
