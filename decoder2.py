@@ -1,5 +1,6 @@
 from PIL import Image
 import math
+import numpy as np
 
 def get_length(pixel: tuple) -> int:
     '''
@@ -18,35 +19,32 @@ def int_to_char(num: int) -> str:
 
 def ints_to_str(int_list: list, spacing: int) -> str:
     contents = ""
-    print("length of array:", len(int_list))
-    # print(int_list)
     for i in range(0, len(int_list), spacing):
-        for j in int_list[i]:
-            contents += int_to_char(j)
-
+        for j in range(0, len(int_list[i]), spacing):
+            for k in int_list[i][j]:
+                contents += int_to_char(k)
     
     return contents
 
 with Image.open("outputs/encoded_picture.png") as img:
-    img_data = list(img.getdata())
-    payload_length = get_length(img_data.pop()) # last tuple stores length of the payload
+    img_data = np.array(img)
+    payload_length = get_length(img_data[-1][-1]) # last tuple stores length of the payload
     print("Payload length:", payload_length)
-    ext_len = get_length(img_data.pop()) # second-last tuple stores length of the extension
+    ext_len = get_length(img_data[-1][-2]) # second-last tuple stores length of the extension
     print("Extension length:", ext_len)
     print("Total length:", payload_length + ext_len)
-
-    print(img_data[:15])
     
     width, height = img.size
     total_pixels = width * (height - 1)
     payload_pixels = (payload_length + ext_len) // 3
     spacing = math.floor(total_pixels // payload_pixels)
+    print("Width x height:", width, height)
     print("Spacing:", spacing)
 
-    # ext = ints_to_str(img_data[payload_length:payload_length+ext_len], spacing)
-    # print("Extension:", ext)
+    raw_data = ints_to_str(img_data, spacing)
+    ext = raw_data[len(raw_data)-ext_len-1:]
+    message = raw_data[:len(raw_data)-ext_len-1]
 
-    message = ints_to_str(img_data, spacing)
 
-with open("outputs/output", "w") as file:
+with open("outputs/output.txt", "w") as file:
     file.write(message)
