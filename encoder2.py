@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 import math
+import sys
 
 class Payload:
     def __init__(self, picture_fn, payload_fn):
@@ -81,8 +82,14 @@ class Payload:
 
 
 # Main 
-payload_file = input("Enter Payload Filename: ")
-picture_file = input("Enter Picture Filename: ")
+
+if len(sys.argv) == 3:
+    payload_file = sys.argv[1]
+    picture_file = sys.argv[2]
+else:
+    print("usage: python encoder2.py <payload> <image_file>")
+    exit(1)
+
 pl = Payload(f"images/{picture_file}", f"payloads/{payload_file}")
 print(f"Extension: {pl.payload_ext}")
 if not pl.canFit():

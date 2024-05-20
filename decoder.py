@@ -11,7 +11,6 @@ def int_to_char(num: int) -> str:
     converts an integer (between 0 and 127) to an ASCII character
     '''
     
-    # print(num)
     binary = format(num, "08b")
     char = chr(int(binary[1:], 2))
     return char if char != "\x00" else ""
@@ -34,7 +33,6 @@ with Image.open("encoded_picture.png") as img:
     print("Extension:", ext)
 
     message = ints_to_str(img_data[:payload_length])
-    # print(message)
 
 with open("outputs/output." + ext, "w") as file:
     file.write(message)

@@ -1,3 +1,7 @@
+"""decoder2.py: Decodes files produced by encoder2.py"""
+
+from pathlib import Path
+import sys
 from PIL import Image
 import math
 import numpy as np
@@ -28,7 +32,15 @@ def ints_to_str(int_list: list, spacing: int, end: int) -> str:
                 if pixel_processed > end:
                     return contents
 
-with Image.open("outputs/encoded_picture.png") as img:
+if len(sys.argv) == 2:
+    picture_file = sys.argv[1]
+    if not Path(picture_file).is_file():
+        print("usage: python decoder2.py [<image_path>]")
+        exit(1)
+else:
+    picture_file = "outputs/encoded_picture.png"
+
+with Image.open(picture_file) as img:
     img_data = np.array(img)
     payload_length = get_length(img_data[-1][-1]) # last tuple stores length of the payload
     print("Payload length:", payload_length)
@@ -44,12 +56,6 @@ with Image.open("outputs/encoded_picture.png") as img:
     print("Spacing:", spacing)
 
     raw_data = ints_to_str(img_data, spacing, payload_pixels)
-    # end_of_payload = len(raw_data) - ext_len
-    # print(raw_data[end_of_payload:])
-    # ext = raw_data[-ext_len:]
-    # print("Extention:", ext)
-    # message = raw_data[:len(raw_data)-ext_len]
-
     ext = "." + raw_data[:ext_len]
     if not ext[1:].isalnum():
         print("Invalid extension:", ext)
