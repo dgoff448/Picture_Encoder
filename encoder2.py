@@ -18,7 +18,7 @@ class Payload:
         self.payload_len = len(self.payload) # BEFORE EXTENSION ADDED
         print(f"Payload Length: {len(self.payload)}")
         print(f"Extension Length: {len(self.payload_ext)}")
-        self.payload = self.payload + self.payload_ext
+        self.payload = self.payload_ext + self.payload + '\n'
 
     # Checks if image can hold payload.
     def canFit(self) -> bool:
