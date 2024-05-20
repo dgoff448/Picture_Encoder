@@ -1,10 +1,10 @@
 """decoder2.py: Decodes files produced by encoder2.py"""
 
-from pathlib import Path
 import sys
-from PIL import Image
 import math
 import numpy as np
+from PIL import Image
+from pathlib import Path
 
 def get_length(pixel: tuple) -> int:
     """convert the 3 digit base 256 integer to a base 10 value"""
