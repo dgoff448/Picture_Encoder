@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 import math
 import sys
+import time
 
 class Payload:
     def __init__(self, picture_fn, payload_fn):
@@ -89,10 +90,12 @@ if len(sys.argv) == 3:
 else:
     print("usage: python encoder2.py <payload> <image_file>")
     exit(1)
-
+start = time.perf_counter()
 pl = Payload(f"images/{picture_file}", f"payloads/{payload_file}")
 print(f"Extension: {pl.payload_ext}")
 if not pl.canFit():
     raise("Not enough space in image to encode payload.")
 
 pl.saveImage(pl.encode())
+end = time.perf_counter()
+print(f"Took {end-start:.3f} seconds")
