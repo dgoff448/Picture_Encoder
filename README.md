@@ -22,6 +22,9 @@ The payload data starts at the first pixel (top-left) of the image and is encodi
 
 ![Data Layout Representation v1](readme_images/DataLayout1.png)
 
+### Result
+This result is a picture of my cat encoded with the entire Bible.<br>
+<img src="readme_images/Cheddar_Bible1.png" alt="drawing" width="300"/>
 
 
 ## Picture Encoder v2
