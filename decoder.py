@@ -1,15 +1,11 @@
 from PIL import Image
 
 def get_length(pixel: tuple) -> int:
-    '''
-    converts the 3 digit base 256 integer to a base 10 value
-    '''
+    """converts the 3 digit base 256 integer to a base 10 value"""
     return int(pixel[0]) * (256**2) + int(pixel[1])* (256**1) + int(pixel[2])
 
 def int_to_char(num: int) -> str:
-    '''
-    converts an integer (between 0 and 127) to an ASCII character
-    '''
+    """converts an integer (between 0 and 127) to an ASCII character"""
     
     binary = format(num, "08b")
     char = chr(int(binary[1:], 2))
