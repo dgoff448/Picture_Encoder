@@ -16,7 +16,7 @@
 ![Visual Encoding Representation](readme_images/VisualRep.png)
 
 ### Data Layout
-The layout of the data within the image is set in a specific way. The last pixel (right-bottom) of the image uses the three values to specify how long the payload data section is in base-256. For example, if the last pixel's RGB value read as (0, 3, 145), then that means the payload data section was 913 characters long. The second-to-last pixel tells how long the payload extension is using the same method (even though there will probably never be a case in which all values are used for the length of an extension).
+The layout of the data within the image is set in a specific way. The last pixel (right-bottom) of the image uses the three values to specify how long the payload data section is in base-256. For example, if the last pixel's RGB value read as (0, 3, 145), then that means the payload data section was 913 characters long. The maximum amount of characters this pixel could represent would be 16,777,215 characters. For reference, the KJV Bible contains roughly 3 million (around 18% of the capacity). The second-to-last pixel tells how long the payload extension is using the same method (even though there will probably never be a case in which all values are used for the length of an extension).
 <br><br>
 The payload data starts at the first pixel (top-left) of the image and is encoding from left to right and then top to bottom. The payload extension is encoded directly after the payload data.
 
@@ -42,7 +42,7 @@ This result is a picture of my cat encoded with the entire Bible.<br>
 *Same as version 1*
 
 ### Data Layout
-The layout of the data within the image is set in a specific way. The last pixel (right-bottom) of the image uses the three values to specify how long the payload data section is in base-256. For example, if the last pixel's RGB value read as (0, 3, 145), then that means the payload data section was 913 characters long. The second-to-last pixel tells how long the payload extension is using the same method (even though there will probably never be a case in which all values are used for the length of an extension).
+The layout of the data within the image is set in a specific way. The last pixel (right-bottom) of the image uses the three values to specify how long the payload data section is in base-256. For example, if the last pixel's RGB value read as (0, 3, 145), then that means the payload data section was 913 characters long. The maximum amount of characters this pixel could represent would be 16,777,215 characters. For reference, the KJV Bible contains roughly 3 million (around 18% of the capacity).  The second-to-last pixel tells how long the payload extension is using the same method (even though there will probably never be a case in which all values are used for the length of an extension).
 <br><br>
 The payload extension starts at the first pixel (top-left) of the image and is encoding from left to right and then top to bottom. The payload data is encoded directly after the payload extension. This is a reverse in order from version 1 and was due to convenience in coding. The <u>**core feature of version 2**</u> is that based on the image's resolution and the size of the payload, a "spacing" variable is calcuated and used to space the data as much as possible (with this simple calculation). This makes it less noticeable in certain cases compared to version 1.
 
