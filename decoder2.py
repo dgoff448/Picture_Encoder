@@ -22,16 +22,16 @@ def ints_to_str(pixel_list: list, spacing: int, end: int) -> str:
     """Convert a list of RGB values into a string"""
     contents = ""
     pixels_processed = 0
-    prog = Progress(end, "Decoding file. . .", True, True)
+    # prog = Progress(end, "Decoding file. . .", True, True)
 
     for i in range(0, len(pixel_list)):
         for j in range(0, len(pixel_list[i]), spacing):
-            prog.printProgress(pixels_processed)
+            # prog.printProgress(pixels_processed)
             pixels_processed += 1
             for k in pixel_list[i][j]:
                 contents += int_to_char(k)
                 if pixels_processed > end:
-                    prog.printComplete("Decoded file")
+                    # prog.printComplete("Decoded file")
                     return contents
 
 
@@ -52,7 +52,6 @@ with Image.open(picture_file) as img:
     total_pixels = width * (height - 1)
     payload_pixels = (payload_length + ext_len) // 3
     spacing = math.floor(total_pixels // payload_pixels)
-
 
     raw_data = ints_to_str(img_data, spacing, payload_pixels)
     ext = "." + raw_data[:ext_len]
