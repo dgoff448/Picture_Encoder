@@ -81,6 +81,9 @@ class Payload:
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord("'"), "08b")[1:], 2)
                     elif self.payload[pc] in ['“', '”']:                                                    # Checks for special characters outside of ASCII table
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord('"'), "08b")[1:], 2)
+                    elif ord(self.payload[pc]) > 127:
+                        print(self.payload[pc])
+                        exit(1) 
                     else:                                                                                   # No special characters found
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord(self.payload[pc]), "08b")[1:], 2)
                     pc += 1                                     # Increment Payload Counter
