@@ -47,7 +47,7 @@ class Payload:
         return False if len(self.payload) > self.maxChars else True
     
     # Converts length int to an RGB tuple
-    def to_base_256(self, n):
+    def to_base_256(self, n:int):
         result = []
         while n > 0:
             result.append(n % 256)
