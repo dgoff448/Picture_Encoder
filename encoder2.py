@@ -70,7 +70,7 @@ class Payload:
         arr[-1][-1] = self.to_base_256(self.payload_len)            # last RGB value holds the length of the payload (read like a normal num)
         arr[-1][-2] = self.to_base_256(len(self.payload_ext))       # second-to-last RGB value holds the length of the payload extension
 
-
+        nonASCII = []
         pc = 0                                                                                              # payload counter
         prog = progress.Progress(self.payload_len, "Encoding File ", self.pb, self.fract, self.perc, 30)    # Instantiating Progress Visuals
         for i in range(0, len(arr)):                                                                        # Iterating over rows of pixels
@@ -84,8 +84,7 @@ class Payload:
                     elif self.payload[pc] in ["—", "–"]:
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord('-'), "08b")[1:], 2)
                     elif ord(self.payload[pc]) > 127:
-                        print(self.payload[pc])
-                        exit(1) 
+                        nonASCII.append(self.payload[pc])
                     else:                                                                                   # No special characters found
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord(self.payload[pc]), "08b")[1:], 2)
                     pc += 1                                     # Increment Payload Counter
@@ -95,9 +94,11 @@ class Payload:
                         break
                 arr[i][j] = tuple(newArr)                       # Convert encoded array into a tuple and replace existing pixel with encoded pixel
                 if pc > len(self.payload)-1:                    # Redundancy
+                        print(f"The following non-ASCII characters were found in the payload file: {set(nonASCII)}.")
                         if not self.noProgress:
                             prog.printComplete("File Encoded.") # Progress Completion Message
                         return arr                              # return the image array that now contains encoded pixels
+        print(f"The following non-ASCII characters were found in the payload file: {set(nonASCII)}.")
         if not self.noProgress:                                 # Redundancy
             prog.printComplete("File Encoded.")                 # Progress Completion Message
         return arr                                              # Redundancy
