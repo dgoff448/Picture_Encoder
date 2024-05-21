@@ -15,7 +15,7 @@ class Progress:
     def printProgress(self, current:int):
         fullCharAmt = int((self.barLength*current)//self.total)
         emptyCharAmt = self.barLength - fullCharAmt
-        fraction = (f"{current} / {self.total}") if self.showFraction else ("")
+        fraction = (f"({current} / {self.total})") if self.showFraction else ("")
         percentage =  (f"{current / self.total:.2%}") if self.showPercentage else ("")
         print(f"\033[1;33m{self.barMsg}\033[00m [\033[1;32m{''.join([self.fullChar for _ in range(fullCharAmt)])}\033[00m{''.join([self.emptyChar for _ in range(emptyCharAmt)])}]   {fraction}   {percentage}", end='\r')
         sys.stdout.flush()
