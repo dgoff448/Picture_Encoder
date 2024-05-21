@@ -102,7 +102,7 @@ class Payload:
         prog.printInProgress("Creating Image. . .")                         # Progress Message        
         img = Image.fromarray(arr)                                          # Convert image array to Image object
         img.save('outputs/encoded_picture.png', quality=100, subsampling=0) # save the image
-        prog.printComplete("Encoded Image Created")                         # Progress Completion Message
+        prog.printComplete("Encoded Image Created.")                         # Progress Completion Message
         
 
 
