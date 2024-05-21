@@ -112,7 +112,7 @@ class Payload:
 
 
 # Main ************************************************************************************************************************************
-start = time.perf_counter()
+total_start = time.perf_counter()
 if args.progress_all:   # If show all progress visuals
     pl = Payload(f"images/{args.Image_Filename}", f"payloads/{args.Payload_Filename}", True, True, True)
 else: 
@@ -121,6 +121,8 @@ else:
 if not pl.canFit():
     raise("Not enough space in image to encode payload.")
 
+encode_start = time.perf_counter()
 pl.saveImage(pl.encode())               # Encoding and Saving New Image
 end = time.perf_counter()
-print(f"Took {end-start:.3f} seconds")
+print(f"Took {end-total_start:.3f} seconds total")
+print(f"Encoded in {end-encode_start:.3f} seconds")
