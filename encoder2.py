@@ -94,11 +94,13 @@ class Payload:
                         break
                 arr[i][j] = tuple(newArr)                       # Convert encoded array into a tuple and replace existing pixel with encoded pixel
                 if pc > len(self.payload)-1:                    # Redundancy
-                        print(f"The following non-ASCII characters were found in the payload file: {set(nonASCII)}.")
+                        if len(nonASCII) > 0:
+                            print(f"The following non-ASCII character(s) were found in the payload file: {set(nonASCII)}.")
                         if not self.noProgress:
                             prog.printComplete("File Encoded.") # Progress Completion Message
                         return arr                              # return the image array that now contains encoded pixels
-        print(f"The following non-ASCII characters were found in the payload file: {set(nonASCII)}.")
+        if len(nonASCII) > 0:
+            print(f"The following non-ASCII character(s) were found in the payload file: {set(nonASCII)}.")
         if not self.noProgress:                                 # Redundancy
             prog.printComplete("File Encoded.")                 # Progress Completion Message
         return arr                                              # Redundancy
