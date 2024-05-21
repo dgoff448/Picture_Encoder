@@ -4,11 +4,28 @@ import math
 import sys
 import time
 import progress
+import argparse
+
+# Argument Handling *********************************************************************
+parser = argparse.ArgumentParser(description="Encode a payload file into an image.")
+parser.add_argument('Payload_Filename', type=str)
+parser.add_argument('Image_Filename', type=str)
+parser.add_argument('-pb', '--progress_bar', action='store_true')
+parser.add_argument('-fract', '--fraction', action='store_true')
+parser.add_argument('-perc', '--percent', action='store_true')
+parser.add_argument('-progall', '--progress_all', action='store_true')
+args = parser.parse_args()
+# ***************************************************************************************
+
 
 class Payload:
-    def __init__(self, picture_fn, payload_fn):
+    def __init__(self, picture_fn, payload_fn, pb, fract, perc):
         self.picture_fn = picture_fn
         self.payload_fn = payload_fn
+        self.pb = pb
+        self.fract = fract
+        self.perc = perc
+        self.noProgress = (not pb) and (not fract) and (not perc)
         self.payload_ext = payload_fn.split(".")[-1]
         self.img = Image.open(picture_fn)
         self.maxChars = (self.img.size[0] * self.img.size[1] * 3) - 6
@@ -58,7 +75,7 @@ class Payload:
         # print(f"Payload Length Pixel: {arr[-1][-1]}\nExtension Length Pixel: {arr[-1][-2]}")      # Debug print to show last to pixels
 
         pc = 0
-        prog = progress.Progress(self.payload_len, "Encoding File ", True, True, 30)
+        prog = progress.Progress(self.payload_len, "Encoding File ", self.pb, self.fract, self.perc, 30)
         for i in range(0, len(arr)): # for i, ar in enumerate(arr):
             for j in range(0, len(arr[i]), spread): # for j, a in enumerate(ar):
                 oldTup = list(arr[i][j]) 
@@ -73,15 +90,18 @@ class Payload:
                         newArr[k] = int(format(arr[i][j][k], "08b")[:1] + format(ord(self.payload[pc]), "08b")[1:], 2)
                         # print(f"Old Val: {format(arr[i][j][k])}\n Pay Val: {format(ord(self.payload[pc]))}")
                     pc += 1
-                    prog.printProgress(pc) # Cosmetics
+                    if not self.noProgress:
+                        prog.printProgress(pc) # Cosmetics
                     if pc > len(self.payload)-1:
                         break
                 arr[i][j] = tuple(newArr)
                 saveArrays.append(newArr)
                 if pc > len(self.payload)-1:
-                        prog.printComplete("File Encoded.") # Cosmetics
+                        if not self.noProgress:
+                            prog.printComplete("File Encoded.") # Cosmetics
                         return arr
-        prog.printComplete("File Encoded.") # Cosmetics
+        if not self.noProgress:
+            prog.printComplete("File Encoded.") # Cosmetics
         # print(saveArrays)
         return arr
     
@@ -94,16 +114,14 @@ class Payload:
         
 
 
-# Main 
+# Main ************************************************************************************************************************************
 
-if len(sys.argv) == 3:
-    payload_file = sys.argv[1]
-    picture_file = sys.argv[2]
-else:
-    print("usage: python encoder2.py <payload> <image_file>")
-    exit(1)
+
 start = time.perf_counter()
-pl = Payload(f"images/{picture_file}", f"payloads/{payload_file}")
+if args.progress_all:
+    pl = Payload(f"images/{args.Image_Filename}", f"payloads/{args.Payload_Filename}", True, True, True)
+else:
+    pl = Payload(f"images/{args.Image_Filename}", f"payloads/{args.Payload_Filename}", args.progress_bar, args.fraction, args.percent)
 print(f"Extension: {pl.payload_ext}")
 if not pl.canFit():
     raise("Not enough space in image to encode payload.")
